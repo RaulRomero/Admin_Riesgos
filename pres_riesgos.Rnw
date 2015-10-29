@@ -26,6 +26,7 @@
 
 
 
+
 \begin{document}
 
 \frame{\titlepage}
@@ -43,7 +44,49 @@
     \caption{Ratings transition and Ratings migration models}
     \label{bene}
     \end{figure}
+\end{frame}
 
+\begin{frame}
+  \begin{block}{Necesarios cálculo del C-VaR en un portafolio de  bonos}
+    Categorías de rating así como probabilidades  de migración de un crédito a otro horizonte. Especificar curva de descuento futuro en el horizonte de riesgo y la tasa de recuperación.
+  \end{block}
+ \begin{figure}[H]
+    \subfloat{\includegraphics[width = 4.5cm]{SpreadCurve.PNG}}
+    \caption{Spread curve}
+    \label{bene}
+    \end{figure}
+
+\end{frame}
+
+\begin{frame}
+ \begin{figure}[H]
+    \subfloat{\includegraphics[width = 4.5cm]{jiji.PNG}}
+    \caption{Spread se reduce con la madurez}
+    \label{bene}
+  3\end{figure}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{}
+  Se especifica entonces el precio futuro del bono con valor presente. $V$ es valor actual.Posteriormente se establecen las \emph{recovery rate}
+  \end{block}
+ \begin{figure}[H]
+    \subfloat{\includegraphics[width = 4.5cm]{forwardDesmadre.PNG}}
+    \subfloat{\includegraphics[width = 4.5cm]{sabeque.PNG}}
+    \caption{Spread se reduce con la madurez y Valores futuros}
+    \label{bene}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{}
+   Obsérvese el sesgo de la distribución al obtener el primer percentil con el nivel de confianza indicado
+  \end{block}
+ \begin{figure}[H]
+    \subfloat{\includegraphics[width = 4.5cm]{puta.PNG}}
+    \caption{Histrograma de los precios futuros de un bono BBB}
+    \label{bene}
+  \end{figure}
 \end{frame}
 \begin{frame}
 
@@ -77,6 +120,7 @@ Sea $ p = \frac{Spread}{1-r}$
    \begin{block}{}
    \begin{itemize}
     \item Se adopta el modelo \emph{Fan and Sundaresan}
+    \item Vassalou and Xing argumenta una relación positiva entre la \emph{default probability} y el valor esperado del retorno de las acciones a pesar de que la literatura en general argumenta lo contrario. 
     \end{itemize}
    \end{block}
 \end{frame}
@@ -102,10 +146,6 @@ pagar <- nocional*p.base/100/100
   Si un contrato sobre un nocional de \Sexpr{nocional} tiene un \emph{CDS Spread} de \Sexpr{p.base} puntos base, la prima será de \Sexpr{pagar}
   \end{block}
 \end{frame}
-
-
-
-
 
 
 \end{document}
