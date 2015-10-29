@@ -1,0 +1,112 @@
+\documentclass{beamer}
+\mode<presentation>
+{
+  \usetheme{Warsaw}
+  \setbeamercovered{transparent}
+}
+%Packages
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{subfig}
+
+
+\title{Riesgo de crédito}
+\author{Raúl Romero Barragán\inst{1}}
+\institute[Universities I T E S O ] % (optional)
+{
+  \inst{1}%
+  Departamento de Matemáticas y Física\\
+  Universidad Jesuita de Guadalajara
+}
+
+
+
+\begin{document}
+
+\frame{\titlepage}
+
+
+\begin{frame}{\emph{CreditMetrics}}
+\section{CreditMetrics}
+\subsection{Matrices}
+  \begin{block}{}
+  Modelos que basan su probabilidad de incumplimiento \emph{default} en matrices de transición de \emph{ratings} empírica. \\
+  \end{block}
+    \begin{figure}[H]
+    \subfloat{\includegraphics[width = 4.5cm]{Matriz1.PNG}}
+    \subfloat{\includegraphics[width = 4.5cm]{Matriz2.PNG}}
+    \caption{Ratings transition and Ratings migration models}
+    \label{bene}
+    \end{figure}
+
+\end{frame}
+\begin{frame}
+
+  \begin{alertblock}{Introducción}
+  Basado en análisis de migración de crédito: La probabilidad de moverse de una calidad creditica a otra en un horizonte dado.
+  \end{alertblock}
+  
+  \begin{block}{Dificultades}
+  La distribución está lejos de ser normal, es sesgada. \\
+  Las correlaciones cambian para todos los pares de deudores.
+  \end{block}
+\end{frame}
+
+
+
+\begin{frame}{Diferencia de spreads}
+\section{Diferencia de spreads}
+Sea $ p = \frac{Spread}{1-r}$
+  \begin{block}{Moody's Analitics: Expected Default Frequency}
+    Tres factores principales para calcular su $p$:
+      \begin{itemize}
+        \item Valor en el mercado de sus activos
+        \item Volatilidad
+        \item Su actual estructura de capital 
+      \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{\emph{Default probability with stocks}}
+\section{Default probability with stocks}
+   \begin{block}{}
+   \begin{itemize}
+    \item Se adopta el modelo \emph{Fan and Sundaresan}
+    \end{itemize}
+   \end{block}
+\end{frame}
+
+\begin{frame}{CDS}
+\section{CDS}
+  \begin{block}{}
+    \begin{itemize}
+    \item Credit Default Swap. Usado por bancos para cubrir sus \emph{exposures} al riesgo de crédito. 
+    \item El comprador paga una prima al vendedor llamada \emph{CDS Spread}
+    \item Líquidos y valuables fácilmente. 
+    \end{itemize}
+        
+  \end{block}
+\end{frame}    
+ \begin{frame}{}
+ <<echo=FALSE, message=FALSE, warning=FALSE>>=
+nocional <- 1000000
+p.base <- 976
+pagar <- nocional*p.base/100/100
+@
+  \begin{block}{}
+  Si un contrato sobre un nocional de \Sexpr{nocional} tiene un \emph{CDS Spread} de \Sexpr{p.base} puntos base, la prima será de \Sexpr{pagar}
+  \end{block}
+\end{frame}
+
+
+
+
+
+
+\end{document}
+
