@@ -3,7 +3,8 @@ library(timeSeries)
 library(ggplot2)
 
 
-# función multibene -------------------------------------------------------
+
+# función multiplot * no creada por nosotros * ----------------------------
 
 # Multiple plot function
 #
@@ -54,16 +55,16 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 # datos generales ---------------------------------------------------------
 
 tasa_recuper <- 0.4
-niv_conf <- 0.95
-alpha    <- 1 - niv_conf
-zeta     <- pnorm(alpha)
+niv_conf     <- 0.95
+alpha        <- 1 - niv_conf
+zeta         <- pnorm(alpha)
 
 # spreads en puntos base --------------------------------------------------
 
-# matriz de spreads para 6 calificaciones y default por año - 5 años
+# matriz de spreads para 6 calificaciones y default por año - 5 an_os
 calif   <- c("AAA", "AA", "A", "BBB", "BB", "B", "CCC", "default")
-años    <- 1:5
-spreads <- matrix(0, nrow = length(calif), ncol = length(años))
+an_os    <- 1:9
+spreads <- matrix(0, nrow = length(calif), ncol = length(an_os))
 
 # AAA
 spreads[1,1] <- 25
@@ -71,63 +72,90 @@ spreads[1,2] <- 55
 spreads[1,3] <- 84
 spreads[1,4] <- 116
 spreads[1,5] <- 125
-# AA
+spreads[1,6] <- 159
+spreads[1,7] <- 185  
+spreads[1,8] <- 212
+spreads[1,9] <- 238
+  
+  # AA
 spreads[2,1] <- 56
 spreads[2,2] <- 87
 spreads[2,3] <- 117
 spreads[2,4] <- 148
 spreads[2,5] <- 159
+spreads[2,6] <- 194
+spreads[2,7] <- 220  
+spreads[2,8] <- 247 
+spreads[2,9] <- 274
 # A 
 spreads[3,1] <- 201
 spreads[3,2] <- 232
 spreads[3,3] <- 264
 spreads[3,4] <- 291
 spreads[3,5] <- 303
+spreads[3,6] <- 337
+spreads[3,7] <- 363  
+spreads[3,8] <- 390
+spreads[3,9] <- 416 
 # BBB
 spreads[4,1] <- 351
 spreads[4,2] <- 382
 spreads[4,3] <- 411
 spreads[4,4] <- 443
 spreads[4,5] <- 467
+spreads[4,6] <- 499
+spreads[4,7] <- 528  
+spreads[4,8] <- 557
+spreads[4,9] <- 587 
 # BB
 spreads[5,1] <- 438
 spreads[5,2] <- 476
 spreads[5,3] <- 512
 spreads[5,4] <- 553
 spreads[5,5] <- 583
+spreads[5,6] <- 623
+spreads[5,7] <- 659  
+spreads[5,8] <- 696
+spreads[5,9] <- 733
 # B
 spreads[6,1] <- 564
 spreads[6,2] <- 614
 spreads[6,3] <- 614
 spreads[6,4] <- 697
 spreads[6,5] <- 730
+spreads[6,6] <- 776
+spreads[6,7] <- 818  
+spreads[6,8] <- 859
+spreads[6,9] <- 901
 # CCC
 spreads[7,1] <- 892
 spreads[7,2] <- 970
 spreads[7,3] <- 1028
 spreads[7,4] <- 1091
 spreads[7,5] <- 1136
+spreads[7,6] <- 1206
+spreads[7,7] <- 1267  
+spreads[7,8] <- 1328
+spreads[7,9] <- 1389
 
-spreads <- spreads / 100^2
-colnames(spreads) <- años
+spreads           <- spreads / 100^2
+colnames(spreads) <- an_os
 rownames(spreads) <- calif
 
-spreads <- cbind(spreads, replicate(4, spreads[ ,5]))
+#Linea eliminada por añadidura de datos
+#spreads <- cbind(spreads, replicate(4, spreads[ ,5]))
 
 # risk free rate ----------------------------------------------------------
 
-rf <- c(3.51, 3.89, 4.56, 4.91, 5.12) / 100
-names(rf) <- años
-
-# parte espuria - por variar - editar{}
-rf <- c(rf, replicate(4, rf[5]))
+rf        <- c(3.51, 3.89, 4.56, 4.91, 5.12, 5.44, 5.69, 5.90, 6.00) / 100
+names(rf) <- an_os
 
 # datos de bonos ----------------------------------------------------------
 
 
 # definir variables relevantes
 horizonte <- 1
-columnas <- c("coupon", "vencimiento", "calif_num")
+columnas  <- c("coupon", "vencimiento", "calif_num")
 calif_num <- 1:(length(calif)-1)
 names(calif_num) <- calif[1:(length(calif)-1)]
 
@@ -140,7 +168,7 @@ cemex_bb      <- c(7.40/100, 2  - horizonte, 5)
 # definir matriz de bonos (informativo)
 bonos <- cbind(liverpool_aaa, herdez_aa, alsea_a, cemex_bb)
 rownames(bonos) <- columnas
-names_bonos <- colnames(bonos)
+names_bonos     <- colnames(bonos)
 
 # valor nominal del bono 
 face_value <- replicate(4, 100)
@@ -172,8 +200,8 @@ for( k in 1:ncol(bonos)){
       m[i, j] <- flujos[k,j]/(1+rf[j]+spreads[i,j])^j
     }
   }
-  rownames(m) <- c(calif[1:(length(calif)-1)])
-  colnames(m) <- 1:ncol(m)
+  rownames(m)  <- c(calif[1:(length(calif)-1)])
+  colnames(m)  <- 1:ncol(m)
   p_value[[k]] <- m
 }
 
@@ -288,7 +316,7 @@ names(VaR) <- names_bonos
 
 
 # gráficas
-grafikis <- list()
+graf <- list()
 for(k in 1:length(names_bonos)){
   gt <- cbind(present_value[[k]], tm_f[,k], acum[nrow(acum):1, k])
   colnames(gt) <- c("valor_presente_del_bono",
@@ -296,15 +324,14 @@ for(k in 1:length(names_bonos)){
   
   gt <- as.data.frame(gt)
   
-  g <- ggplot()+geom_line(data = gt, aes(x = valor_presente_del_bono, y=freq.rel),
+  g  <- ggplot()+geom_line(data = gt, aes(x = valor_presente_del_bono, y=freq.rel),
                           colour = "dark green", size = 1, linetype = "longdash")+
     geom_line(data = gt, aes(x = valor_presente_del_bono, y=freq.acum), 
               colour = "dark red", size = 1)+ ggtitle(names_bonos[k])+
     geom_vline(xintercept=VaR[k], linetype = "longdash", colour = "blue")
-  grafikis[[k]] <- g
+  graf[[k]] <- g
 }
 
-multiplot(grafikis[[1]],grafikis[[2]],grafikis[[3]],grafikis[[4]],cols = 2)
 
 # Portafolio de 2 bonos ---------------------------------------------------
 
@@ -322,21 +349,21 @@ port <- as.numeric(port[c(-1)])
 names(port) <- 1:length(port)
 
 la_ley <- as.numeric(names(sort(port)))
-port <- as.numeric(sort(port))
+port   <- as.numeric(sort(port))
 
 # determinar probabilidad conjunta del portafolio (frec rel)
-tm_ff <- tm_f[ ,c(2,3)]
+tm_ff    <- tm_f[ ,c(2,3)]
 frec_rel <- numeric()
 
 frec_rel[1] <- 0
 for(k in 1:length(calif2)){
-  frec_rel <- c(frec_rel,tm_ff[k, 1]*tm_ff[ ,2])
+  frec_rel  <- c(frec_rel,tm_ff[k, 1]*tm_ff[ ,2])
 }
 frec_rel <- as.numeric(frec_rel[c(-1)])
 frec_rel <- frec_rel[la_ley]
 
 # determinación de frecuencia acumulada
-frec_acum <- numeric()
+frec_acum    <- numeric()
 frec_acum[1] <- frec_rel[1]
 for(i in 2:length(frec_rel)){
   frec_acum[i] <- frec_acum[i-1] + frec_rel[i]
@@ -349,7 +376,7 @@ stdev <- 0
 for(i in 1:length(port)){
   stdev <- stdev+frec_rel[i]*(port[i]-expected_value_port)^2
 }
-stdev <- sqrt(stdev)
+stdev   <- sqrt(stdev)
 
 # valor en riesgo del portafolio ------------------------------------------
 
@@ -373,13 +400,22 @@ VaR_portaf <- (alpha - Y1)*(X2 - X1) / (Y2 - Y1) + X1
 
 solver <- as.data.frame(cbind(port, frec_rel, frec_acum))
 
-g2 <- ggplot()+geom_line(data = solver, aes(x = port, y=frec_rel),
+g2     <- ggplot()+geom_line(data = solver, aes(x = port, y=frec_rel),
                          colour = "dark green", size = 1, linetype = "longdash")+
   geom_line(data = solver, aes(x = port, y=frec_acum), 
             colour = "dark red", size = 1)+ ggtitle("distr_prob_portafolio")+
   geom_vline(xintercept=VaR_portaf, linetype = "longdash", colour = "blue")
-g2
+
 
 # Presentación de resultados ----------------------------------------------
 
-# [agregar redacción de resultados]
+# distribución de prob. de cada bono + VaR
+multiplot(graf[[1]],graf[[2]],graf[[3]],graf[[4]],cols = 2)
+
+# Valor en riesgo por bono
+VaR
+
+# distribución de probabilidad empírica del portafolio + VaR
+g2
+
+sprintf("El VaR del portafolio en unidades monetarias es: %f", VaR_portaf)
