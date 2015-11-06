@@ -332,7 +332,6 @@ for(k in 1:length(names_bonos)){
   graf[[k]] <- g
 }
 
-
 # Portafolio de 2 bonos ---------------------------------------------------
 
 pv <- list(present_value[[2]], present_value[[3]])
